@@ -1,124 +1,144 @@
-from optapy import constraint_provider
-from optapy.score import HardSoftScore
-from optapy.constraint import ConstraintFactory, Joiners
-
-from optapy import constraint_provider, get_class
-from optapy import constraint_provider
-from optapy.constraint import ConstraintFactory
-from optapy.score import HardSoftScore
-
 from datetime import datetime, date, timedelta
-
+from optapy import constraint_provider, get_class
+from optapy.constraint import ConstraintFactory, Joiners
+from optapy.score import HardSoftScore
+from domain import Lesson, Subjective, Teacher, Nucleo
 from utils import *
-from domain import Lesson, Interest, Subjective, Teacher
 
-# Obtenção das classes
-# LessonClass = get_class(Lesson)
-# TeacherClass = get_class(Teacher)
-# SubjectiveClass = get_class(Subjective)
-# InterestClass = get_class(Interest)
 
-interest_lesson_list = [
-    Interest(Subjective(1, "INF0291"), Teacher(1, "Plínio de Sá Leitão Júnior")),
-    Interest(Subjective(1, "INF0291"), Teacher(2, "Reinaldo de Souza Júnior")),
-    Interest(Subjective(1, "INF0291"), Teacher(3, "Fábio Nogueira de Lucena")),
-    Interest(Subjective(2, "INF0292"), Teacher(4, "Taciana Novo Kudo")),
-    Interest(Subjective(2, "INF0292"), Teacher(5, "Renata Dutra Braga")),
-    Interest(Subjective(3, "INF0287"), Teacher(6, "Ana Claudia Bastos Loureiro Monção")),
-    Interest(Subjective(3, "INF0287"), Teacher(7, "Sofia Larissa da Costa Paiva")),
-    Interest(Subjective(3, "INF0287"), Teacher(8, "Leonardo Andrade Ribeiro")),
-    Interest(Subjective(4, "INF0018"), Teacher(9, "Jacson Rodrigues Barbosa")),
-    Interest(Subjective(4, "INF0018"), Teacher(7, "Sofia Larissa da Costa Paiva")),
-    Interest(Subjective(5, "INF0283"), Teacher(7, "Sofia Larissa da Costa Paiva")),
-    Interest(Subjective(5, "INF0283"), Teacher(6, "Ana Claudia Bastos Loureiro Monção")),
-    Interest(Subjective(5, "INF0283"), Teacher(10, "Renato Bulcão")),
-    Interest(Subjective(6, "INF0294"), Teacher(11, "Eliomar Araújo de Lima")),
-    Interest(Subjective(6, "INF0294"), Teacher(12, "Evellin Cardoso")),
-    Interest(Subjective(7, "INF0056"), Teacher(2, "Reinaldo de Souza Júnior")),
-    Interest(Subjective(7, "INF0056"), Teacher(1, "Plínio de Sá Leitão Júnior")),
-    Interest(Subjective(8, "INF0299"), Teacher(10, "Renato Bulcão")),
-    Interest(Subjective(8, "INF0299"), Teacher(6, "Ana Claudia Bastos Loureiro Monção")),
-    Interest(Subjective(8, "INF0299"), Teacher(7, "Sofia Larissa da Costa Paiva")),
-    Interest(Subjective(9, "INF0285"), Teacher(13, "William Divino Ferreira")),
-    Interest(Subjective(9, "INF0285"), Teacher(14, "Rubens de Castro Pereira")),
-    Interest(Subjective(10, "INF0293"), Teacher(15, "Edison Andrade Martins Morais")),
-    Interest(Subjective(10, "INF0293"), Teacher(4, "Taciana Novo Kudo")),
-    Interest(Subjective(11, "INF0300"), Teacher(16, "Adailton Ferreira de Araújo")),
-    Interest(Subjective(11, "INF0300"), Teacher(13, "William Divino Ferreira")),
-    Interest(Subjective(12, "INF0284"), Teacher(17, "Hugo Nascimento")),
-    Interest(Subjective(12, "INF0284"), Teacher(18, "Leonardo Antonio Alves")),
-    Interest(Subjective(13, "INF0288"), Teacher(19, "Juliano Lopes de Oliveira")),
-    Interest(Subjective(13, "INF0288"), Teacher(20, "Alessandro Cruvinel Machado de Araújo")),
+# TODO: ID disciplina, Code disciplina, List(): Id Professores interessados
+possibilite_lesson_list = [
+    (1, "INF0291", [1, 2, 3]),
+    (2, "INF0292", [4, 5]),
+    (3, "INF0287", [6, 7, 8]),
+    (4, "INF0018", [9, 7]),
+    (5, "INF0283", [7, 6, 10]),
+    (6, "INF0294", [11, 12]),
+    (7, "INF0056", [2, 1]),
+    (8, "INF0299", [10, 6, 7]),
+    (9, "INF0285", [13, 14]),
+    (10, "INF0293", [15, 4]),
+    (11, "INF0300", [16, 13]),
+    (12, "INF0284", [17, 18]),
+    (13, "INF0288", [19, 20]),
 ]
 
-# Obtenção das classes
-LessonClass = get_class(Lesson)
-TeacherClass = get_class(Teacher)
-SubjectiveClass = get_class(Subjective)
-InterestClass = get_class(Interest)
+# TODO: ID professor, name Professor, ENTRADA NUCLEO, id Nucleo
+nucleo_restriction_list = [
+    (19, "Juliano Lopes de Oliveira", "dez./2022", [1]),
+    (20, "Alessandro Cruvinel Machado de Araújo", "dez./2022", [1]),
+    (16, "Adailton Ferreira de Araújo", "nov./2023", [1]),
+    (13, "William Divino Ferreira", "dez./2022", [1]),
+    (18, "Leonardo Antonio Alves", "nov./2023", [2]),
+    (17, "Hugo Nascimento", "dez./2022", [2])
+]
 
-# Define the constraint provider
+nucleo_list = [
+    Nucleo(1, "2.1 - Núcleo de Fundamentos de Sistemas e Software"),
+    Nucleo(2, "2.2 - Núcleo de Aplicações e Tecnologias de Sistemas e Software")
+]
+
+
+def parse_date(date_str):
+    month_mapping = {
+        'jan.': '01',
+        'fev.': '02',
+        'mar.': '03',
+        'abr.': '04',
+        'mai.': '05',
+        'jun.': '06',
+        'jul.': '07',
+        'ago.': '08',
+        'set.': '09',
+        'out.': '10',
+        'nov.': '11',
+        'dez.': '12'
+    }
+    month_str, year_str = date_str.split('/')
+    month_number_str = month_mapping.get(month_str.lower())
+    if not month_number_str:
+        raise ValueError(f"Invalid month: {month_str}")
+    return datetime.strptime(f"{month_number_str}/{year_str}", '%m/%Y')
+
+def get_nucleo_restrictions():
+    restrictions = {}
+    for teacher_id, _, entry_date, nucleo_ids in nucleo_restriction_list:
+        restrictions[teacher_id] = {
+            'entry_date': parse_date(entry_date),
+            'nucleo_ids': set(nucleo_ids)
+        }
+    return restrictions
+
+nucleo_restrictions = get_nucleo_restrictions()
+print(nucleo_restrictions)
+
+def has_conflicting_nucleo_interest(l1, l2):
+    l1_restrictions = nucleo_restrictions.get(l1.teacher.id)
+    l2_restrictions = nucleo_restrictions.get(l2.teacher.id)
+    if l1_restrictions and l2_restrictions:
+        shared_nucleos = l1_restrictions['nucleo_ids'] & l2_restrictions['nucleo_ids']
+        if shared_nucleos and l1.year == l2.year - 1:
+            return True
+    return False
+
 @constraint_provider
 def define_constraints(constraint_factory):
-    return [
-        conflicting_teacher_interests(constraint_factory),
-        # teacher_taught_last_time(constraint_factory),
-        # teacher_taught_last_two_times(constraint_factory),
-    ]
+    constraints = []
+    constraints.extend([
+        # Restrições de conflitos de interesse de professores
+        ## Garante que nenhum professor ensine a mesma disciplina mais de uma vez no mesmo ano.
+        constraint_factory.from_(Lesson)
+                         .join(Lesson,
+                               Joiners.equal(lambda lesson: lesson.subject),
+                               Joiners.equal(lambda lesson: lesson.teacher))
+                         .penalize("Same teacher for the same subject", HardSoftScore.ONE_HARD),
 
-# def teacher_taught_last_time(constraint_factory):
-#     # Restriction: Teachers from the interest list who taught the subject last time and did not teach it the time before
+        # Restrição de última aula ministrada
+        ## Garante que professores que ministraram a disciplina na última vez que foi oferecida não a ministrem 
+        constraint_factory.from_(Lesson)
+                         .join(Lesson,
+                               Joiners.equal(lambda lesson: lesson.subject),
+                               Joiners.equal(lambda lesson: lesson.teacher),
+                               Joiners.filtering(lambda l1, l2: l1.year == l2.year - 1))
+                         .penalize("Teacher taught last time", HardSoftScore.ONE_HARD),
 
-#     last_year = 2023
-#     penultimate_year = 2022
+        # Restrição de últimas duas aulas ministradas
+        ## Garante que professores que ministraram a disciplina nas duas últimas vezes que foi oferecida não a ministrem novamente.
+        constraint_factory.from_(Lesson)
+                         .join(Lesson,
+                               Joiners.equal(lambda lesson: lesson.subject),
+                               Joiners.equal(lambda lesson: lesson.teacher),
+                               Joiners.filtering(lambda l1, l2: l1.year == l2.year - 2))
+                         .penalize("Teacher taught the last two times", HardSoftScore.ONE_HARD),
 
-#     def get_teacher_for_subject(year):
-#         return constraint_factory.from_(Lesson) \
-#             .filter(lambda lesson: lesson.year == year) \
-#             .group_by(lambda lesson: lesson.subjective,
-#                       lambda lesson: lesson.teacher) \
-#             .if_exists(lambda key, group: group.single())
+        # Restrições de conflito de interesse de núcleo
+        ## Garante que professores dentro do mesmo núcleo que já ministraram a disciplina no último ano não a ministrem novamente.
+        # constraint_factory.from_(Lesson)
+        #                  .join(Lesson,
+        #                        Joiners.equal(lambda lesson: lesson.subject),
+        #                        Joiners.equal(lambda lesson: lesson.teacher),
+        #                        Joiners.filtering(lambda l1, l2: nucleo_restrictions.get(l1.teacher.id) and
+        #                                                      nucleo_restrictions.get(l2.teacher.id) and
+        #                                                      nucleo_restrictions[l1.teacher.id]['nucleo_ids'] &
+        #                                                      nucleo_restrictions[l2.teacher.id]['nucleo_ids'] and
+        #                                                      l1.year == l2.year - 1))
+        #                  .penalize("Conflicting nucleo interest", HardSoftScore.ONE_HARD),
+    ])
 
-#     last_year_teachers = get_teacher_for_subject(last_year)
-#     penultimate_year_teachers = get_teacher_for_subject(penultimate_year)
+    # Restrições de professores válidos para a disciplina
+    ## Garante que apenas professores permitidos podem ministrar certas disciplinas.
+    for possibility in possibilite_lesson_list:
+        subject_id, subject_code, allowed_teacher_ids = possibility
+        constraints.append(
+            constraint_factory.from_(Lesson)
+                             .filter(lambda lesson: lesson.subject.id == subject_id)
+                             .filter(lambda lesson: lesson.teacher is not None)
+                             .filter(lambda lesson: lesson.teacher.id not in allowed_teacher_ids)
+                             .penalize("Invalid teacher for subject {}".format(subject_code), HardSoftScore.ONE_HARD)
+        )
+    
+    
+    return constraints
 
-#     return constraint_factory.from_(LessonClass) \
-#         .filter(lambda la: la.teacher is not None and \
-#                 la.lesson.subjective in last_year_teachers and \
-#                 last_year_teachers[la.lesson.subjective] == la.teacher and \
-#                 (la.lesson.subjective not in penultimate_year_teachers or \
-#                  penultimate_year_teachers[la.lesson.subjective] != la.teacher)) \
-#         .penalize("Teacher taught last time", HardSoftScore.ONE_HARD)
 
-# def teacher_taught_last_two_times(constraint_factory):
-#     # Restriction: Teachers from the interest list who taught the subject in the last two offerings
 
-#     last_year = 2023
-#     penultimate_year = 2022
-
-#     def get_teacher_for_subject(year):
-#         return constraint_factory.from_(Lesson) \
-#             .filter(lambda lesson: lesson.year == year) \
-#             .group_by(lambda lesson: lesson.subjective,
-#                       lambda lesson: lesson.teacher) \
-#             .if_exists(lambda key, group: group.single())
-
-#     last_year_teachers = get_teacher_for_subject(last_year)
-#     penultimate_year_teachers = get_teacher_for_subject(penultimate_year)
-
-#     return constraint_factory.from_(LessonClass) \
-#         .filter(lambda la: la.teacher is not None and \
-#                 la.lesson.subjective in last_year_teachers and \
-#                 la.lesson.subjective in penultimate_year_teachers and \
-#                 last_year_teachers[la.lesson.subjective] == la.teacher and \
-#                 penultimate_year_teachers[la.lesson.subjective] == la.teacher) \
-#         .penalize("Teacher taught last two times", HardSoftScore.ONE_HARD)
-
-def conflicting_teacher_interests(constraint_factory):
-    # Restriction: Teachers from the interest list wanting to teach the same subject
-    return constraint_factory.from_(LessonClass) \
-        .filter(lambda la: la.teacher is not None) \
-        .join(Interest,
-              Joiners.equal(lambda la: la.lesson.subjective, lambda interest: interest.subjective),
-              Joiners.equal(lambda la: la.teacher, lambda interest: interest.teacher)) \
-        .penalize("Conflicting teacher interests", HardSoftScore.ONE_HARD)

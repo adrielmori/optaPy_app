@@ -8,6 +8,18 @@ from optapy import problem_fact, planning_id, planning_entity, planning_variable
 from optapy.types import HardSoftScore
 from datetime import time
 
+@problem_fact
+class Nucleo:
+    def __init__(self, id: int, name: str):
+        self.id = id
+        self.name = name
+
+    @planning_id
+    def get_id(self):
+        return self.id
+
+    def __str__(self):
+        return f"Nucleo(id={self.id}, name={self.name})"
 
 @problem_fact
 class Teacher:
@@ -35,18 +47,6 @@ class Subjective:
 
     def __str__(self):
         return f"Subjective(id={self.id}, name={self.name})"
-
-# @problem_fact
-class Interest:
-    teacher: Teacher
-    subjective: Subjective
-
-    def __init__(self, teacher, subjective):
-        self.teacher = teacher
-        self.subjective = subjective
-
-    def __str__(self):
-        return f"Interest(teacher={self.teacher}, subjective={self.subjective})"
 
 @planning_entity
 class Lesson:
@@ -86,31 +86,17 @@ def format_list(a_list):
 class TimeTable:
     teacher_list: list[Teacher]
     lesson_list: list[Lesson]
-    # interest_lesson_list: list[Interest]
-    # subjective_list: list[Subjective]
     score: HardSoftScore
 
     def __init__(self, teacher_list: list[Teacher], lesson_list: list[Lesson], score: HardSoftScore = None):
         self.teacher_list = teacher_list
         self.lesson_list = lesson_list
-        # self.interest_lesson_list = interest_lesson_list
-        # self.subjective_list = subjective_list
         self.score = score
 
     @problem_fact_collection_property(Teacher)
     @value_range_provider("teacherRange")
     def get_teacher_list(self):
         return self.teacher_list
-
-    # @problem_fact_collection_property(Interest)
-    # @value_range_provider("interestRange")
-    # def get_interest_lesson_list(self):
-    #     return self.interest_lesson_list
-    
-    # @problem_fact_collection_property(Subjective)
-    # @value_range_provider("subjectiveRange")
-    # def get_interest_lesson_list(self):
-    #     return self.subjective_list   
     
     @planning_entity_collection_property(Lesson)
     def get_lesson_list(self):
@@ -242,38 +228,38 @@ def generate_problem():
         Lesson(65, 2024, Subjective(10, "INF0293")),
     ]
 
-    interest_lesson_list = [
-        Interest(Subjective(1, "INF0291"), Teacher(1, "Plínio de Sá Leitão Júnior")),
-        Interest(Subjective(1, "INF0291"), Teacher(2, "Reinaldo de Souza Júnior")),
-        Interest(Subjective(1, "INF0291"), Teacher(3, "Fábio Nogueira de Lucena")),
-        Interest(Subjective(2, "INF0292"), Teacher(4, "Taciana Novo Kudo")),
-        Interest(Subjective(2, "INF0292"), Teacher(5, "Renata Dutra Braga")),
-        Interest(Subjective(3, "INF0287"), Teacher(6, "Ana Claudia Bastos Loureiro Monção")),
-        Interest(Subjective(3, "INF0287"), Teacher(7, "Sofia Larissa da Costa Paiva")),
-        Interest(Subjective(3, "INF0287"), Teacher(8, "Leonardo Andrade Ribeiro")),
-        Interest(Subjective(4, "INF0018"), Teacher(9, "Jacson Rodrigues Barbosa")),
-        Interest(Subjective(4, "INF0018"), Teacher(7, "Sofia Larissa da Costa Paiva")),
-        Interest(Subjective(5, "INF0283"), Teacher(7, "Sofia Larissa da Costa Paiva")),
-        Interest(Subjective(5, "INF0283"), Teacher(6, "Ana Claudia Bastos Loureiro Monção")),
-        Interest(Subjective(5, "INF0283"), Teacher(10, "Renato Bulcão")),
-        Interest(Subjective(6, "INF0294"), Teacher(11, "Eliomar Araújo de Lima")),
-        Interest(Subjective(6, "INF0294"), Teacher(12, "Evellin Cardoso")),
-        Interest(Subjective(7, "INF0056"), Teacher(2, "Reinaldo de Souza Júnior")),
-        Interest(Subjective(7, "INF0056"), Teacher(1, "Plínio de Sá Leitão Júnior")),
-        Interest(Subjective(8, "INF0299"), Teacher(10, "Renato Bulcão")),
-        Interest(Subjective(8, "INF0299"), Teacher(6, "Ana Claudia Bastos Loureiro Monção")),
-        Interest(Subjective(8, "INF0299"), Teacher(7, "Sofia Larissa da Costa Paiva")),
-        Interest(Subjective(9, "INF0285"), Teacher(13, "William Divino Ferreira")),
-        Interest(Subjective(9, "INF0285"), Teacher(14, "Rubens de Castro Pereira")),
-        Interest(Subjective(10, "INF0293"), Teacher(15, "Edison Andrade Martins Morais")),
-        Interest(Subjective(10, "INF0293"), Teacher(4, "Taciana Novo Kudo")),
-        Interest(Subjective(11, "INF0300"), Teacher(16, "Adailton Ferreira de Araújo")),
-        Interest(Subjective(11, "INF0300"), Teacher(13, "William Divino Ferreira")),
-        Interest(Subjective(12, "INF0284"), Teacher(17, "Hugo Nascimento")),
-        Interest(Subjective(12, "INF0284"), Teacher(18, "Leonardo Antonio Alves")),
-        Interest(Subjective(13, "INF0288"), Teacher(19, "Juliano Lopes de Oliveira")),
-        Interest(Subjective(13, "INF0288"), Teacher(20, "Alessandro Cruvinel Machado de Araújo")),
-    ]
+    # interest_lesson_list = [
+    #     Interest(Subjective(1, "INF0291"), Teacher(1, "Plínio de Sá Leitão Júnior")),
+    #     Interest(Subjective(1, "INF0291"), Teacher(2, "Reinaldo de Souza Júnior")),
+    #     Interest(Subjective(1, "INF0291"), Teacher(3, "Fábio Nogueira de Lucena")),
+    #     Interest(Subjective(2, "INF0292"), Teacher(4, "Taciana Novo Kudo")),
+    #     Interest(Subjective(2, "INF0292"), Teacher(5, "Renata Dutra Braga")),
+    #     Interest(Subjective(3, "INF0287"), Teacher(6, "Ana Claudia Bastos Loureiro Monção")),
+    #     Interest(Subjective(3, "INF0287"), Teacher(7, "Sofia Larissa da Costa Paiva")),
+    #     Interest(Subjective(3, "INF0287"), Teacher(8, "Leonardo Andrade Ribeiro")),
+    #     Interest(Subjective(4, "INF0018"), Teacher(9, "Jacson Rodrigues Barbosa")),
+    #     Interest(Subjective(4, "INF0018"), Teacher(7, "Sofia Larissa da Costa Paiva")),
+    #     Interest(Subjective(5, "INF0283"), Teacher(7, "Sofia Larissa da Costa Paiva")),
+    #     Interest(Subjective(5, "INF0283"), Teacher(6, "Ana Claudia Bastos Loureiro Monção")),
+    #     Interest(Subjective(5, "INF0283"), Teacher(10, "Renato Bulcão")),
+    #     Interest(Subjective(6, "INF0294"), Teacher(11, "Eliomar Araújo de Lima")),
+    #     Interest(Subjective(6, "INF0294"), Teacher(12, "Evellin Cardoso")),
+    #     Interest(Subjective(7, "INF0056"), Teacher(2, "Reinaldo de Souza Júnior")),
+    #     Interest(Subjective(7, "INF0056"), Teacher(1, "Plínio de Sá Leitão Júnior")),
+    #     Interest(Subjective(8, "INF0299"), Teacher(10, "Renato Bulcão")),
+    #     Interest(Subjective(8, "INF0299"), Teacher(6, "Ana Claudia Bastos Loureiro Monção")),
+    #     Interest(Subjective(8, "INF0299"), Teacher(7, "Sofia Larissa da Costa Paiva")),
+    #     Interest(Subjective(9, "INF0285"), Teacher(13, "William Divino Ferreira")),
+    #     Interest(Subjective(9, "INF0285"), Teacher(14, "Rubens de Castro Pereira")),
+    #     Interest(Subjective(10, "INF0293"), Teacher(15, "Edison Andrade Martins Morais")),
+    #     Interest(Subjective(10, "INF0293"), Teacher(4, "Taciana Novo Kudo")),
+    #     Interest(Subjective(11, "INF0300"), Teacher(16, "Adailton Ferreira de Araújo")),
+    #     Interest(Subjective(11, "INF0300"), Teacher(13, "William Divino Ferreira")),
+    #     Interest(Subjective(12, "INF0284"), Teacher(17, "Hugo Nascimento")),
+    #     Interest(Subjective(12, "INF0284"), Teacher(18, "Leonardo Antonio Alves")),
+    #     Interest(Subjective(13, "INF0288"), Teacher(19, "Juliano Lopes de Oliveira")),
+    #     Interest(Subjective(13, "INF0288"), Teacher(20, "Alessandro Cruvinel Machado de Araújo")),
+    # ]
 
 
     return TimeTable(teacher_list, lesson_list)
