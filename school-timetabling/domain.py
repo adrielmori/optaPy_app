@@ -160,6 +160,11 @@ def generate_problem():
         Teacher(20, "Alessandro Cruvinel Machado de Araújo"),
     ]
 
+    nucleo_list = [
+        Nucleo(1, "2.1 - Núcleo de Fundamentos de Sistemas e Software"),
+        Nucleo(2, "2.2 - Núcleo de Aplicações e Tecnologias de Sistemas e Software")
+    ]
+
     lesson_list = [
         Lesson(1, 2020, Subjective(3, "INF0287"), Teacher(8, "Leonardo Andrade Ribeiro")),
         Lesson(2, 2020, Subjective(4, "INF0018"), Teacher(7, "Sofia Larissa da Costa Paiva")),
