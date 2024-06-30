@@ -1,4 +1,4 @@
-from domain import Lesson, lesson_list
+from domain import Lesson
 from optapy import constraint_provider
 from optapy.constraint import ConstraintFactory
 from optapy.score import HardSoftScore
@@ -15,7 +15,8 @@ def define_constraints(constraint_factory: ConstraintFactory):
         teacher_conflict_2_constraint(constraint_factory),
         teacher_conflict_3_constraint(constraint_factory),
         teacher_conflict_4_constraint(constraint_factory),
-        # teacher_conflict_5_constraint(constraint_factory),
+        teacher_conflict_5_constraint(constraint_factory),
+        teacher_conflict_6_constraint(constraint_factory),
     ]
 
 
@@ -92,10 +93,58 @@ def teacher_conflict_4_constraint(constraint_factory):
 def teacher_conflict_5_constraint(constraint_factory):
     return (
         constraint_factory.for_each(Lesson)
-        .filter(lambda lesson: oldest_core_teacher(lesson) is not None)
+        .filter(
+            lambda lesson: lesson.teacher.id in lesson.subject.interested_teacher_ids
+        )
+        .filter(
+            lambda lesson: any(
+                lesson.teacher.entry_date_core == teacher.entry_date_core
+                for teacher in lesson.teacher_list
+                if teacher.id in lesson.subject.interested_teacher_ids
+                and teacher.entry_date_core
+                == min(
+                    (
+                        teacher.entry_date_core
+                        for teacher in lesson.teacher_list
+                        if teacher.id in lesson.subject.interested_teacher_ids
+                    ),
+                    default=None,
+                )
+            )
+        )
         .reward(
-            "Professor que está a mais tempo no núcleo dentre os interessados na disciplina",
+            "Professor with longest tenure in core",
             HardSoftScore.ofSoft(10),
+        )
+    )
+
+
+# Recompensa para o professor que está há mais tempo no inf dentre os interessados na disciplina.
+def teacher_conflict_6_constraint(constraint_factory):
+    return (
+        constraint_factory.for_each(Lesson)
+        .filter(
+            lambda lesson: lesson.teacher.id in lesson.subject.interested_teacher_ids
+        )
+        .filter(
+            lambda lesson: any(
+                lesson.teacher.entry_date_inf == teacher.entry_date_inf
+                for teacher in lesson.teacher_list
+                if teacher.id in lesson.subject.interested_teacher_ids
+                and teacher.entry_date_inf
+                == min(
+                    (
+                        teacher.entry_date_inf
+                        for teacher in lesson.teacher_list
+                        if teacher.id in lesson.subject.interested_teacher_ids
+                    ),
+                    default=None,
+                )
+            )
+        )
+        .reward(
+            "Professor com mais tempo no inf",
+            HardSoftScore.ofSoft(5),
         )
     )
 
@@ -164,31 +213,3 @@ def last_teacher_to_teach(lesson):
     )
 
     return last_teacher_id
-
-
-# Verifica o professor que está no núcleo a mais tempo dentre os interessados na disciplina.
-def oldest_core_teacher(lesson):
-    subject_interested = lesson.subject.interested_teacher_ids
-    teacher_list = lesson.teacher_list
-
-    oldest_teacher_ids = []
-    oldest_teacher_dates = []
-
-    for teacher_id in subject_interested:
-        for teacher in teacher_list:
-            if teacher.id == teacher_id and teacher.entry_date_core is not None:
-                oldest_teacher_ids.append(teacher.id)
-                oldest_teacher_dates.append(teacher.entry_date_core)
-
-    min_date = min(oldest_teacher_dates) if oldest_teacher_dates else None
-    min_date_index = oldest_teacher_dates.index(min_date)
-
-    min_date_teacher_id = oldest_teacher_ids[min_date_index]
-
-    if not min_date_teacher_id:
-        return None
-
-    return min_date_teacher_id
-
-
-print(oldest_core_teacher(lesson_list[61]))
