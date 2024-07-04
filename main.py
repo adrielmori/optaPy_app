@@ -45,5 +45,5 @@ solver_config = (
 
 solution = solver_factory_create(solver_config).buildSolver().solve(generate_problem())
 
-
+print(solution)
 print_timetable(solution)

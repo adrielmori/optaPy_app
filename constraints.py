@@ -72,6 +72,7 @@ def teacher_conflict_2_constraint(constraint_factory):
 def teacher_conflict_3_constraint(constraint_factory):
     return (
         constraint_factory.for_each(Lesson)
+        .filter(lambda lesson: lesson.teacher.nucleo.name in lesson.subject.nucleo.name)
         .filter(lambda lesson: is_new_teacher_for_subject(lesson))
         .reward("Professor nunca ministrou a disciplina", HardSoftScore.ofSoft(50))
     )
@@ -81,6 +82,7 @@ def teacher_conflict_3_constraint(constraint_factory):
 def teacher_conflict_4_constraint(constraint_factory):
     return (
         constraint_factory.for_each(Lesson)
+        .filter(lambda lesson: lesson.teacher.nucleo.name in lesson.subject.nucleo.name)
         .filter(lambda lesson: last_teacher_to_teach(lesson) is not None)
         .reward(
             "Professor que ministrou a disciplina a mais tempo",
@@ -96,6 +98,7 @@ def teacher_conflict_5_constraint(constraint_factory):
         .filter(
             lambda lesson: lesson.teacher.id in lesson.subject.interested_teacher_ids
         )
+        .filter(lambda lesson: lesson.teacher.nucleo.name in lesson.subject.nucleo.name)
         .filter(
             lambda lesson: any(
                 lesson.teacher.entry_date_core == teacher.entry_date_core
@@ -113,7 +116,7 @@ def teacher_conflict_5_constraint(constraint_factory):
             )
         )
         .reward(
-            "Professor with longest tenure in core",
+            "Professor com mais tempo no núcleo",
             HardSoftScore.ofSoft(10),
         )
     )
@@ -126,6 +129,7 @@ def teacher_conflict_6_constraint(constraint_factory):
         .filter(
             lambda lesson: lesson.teacher.id in lesson.subject.interested_teacher_ids
         )
+        .filter(lambda lesson: lesson.teacher.nucleo.name in lesson.subject.nucleo.name)
         .filter(
             lambda lesson: any(
                 lesson.teacher.entry_date_inf == teacher.entry_date_inf

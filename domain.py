@@ -15,6 +15,20 @@ from optapy.score import HardSoftScore
 
 
 @problem_fact
+class Nucleo:
+    def __init__(self, id: int, name: str):
+        self.id = id
+        self.name = name
+
+    @planning_id
+    def get_id(self):
+        return self.id
+
+    def __str__(self):
+        return f"Nucleo(id={self.id}, name={self.name})"
+
+
+@problem_fact
 class Teacher:
     def __init__(
         self,
@@ -22,15 +36,20 @@ class Teacher:
         name: str,
         entry_date_core: date = None,
         entry_date_inf: date = None,
+        nucleo: Nucleo = None,
     ):
         self.id = id
         self.name = name
         self.entry_date_core = entry_date_core
         self.entry_date_inf = entry_date_inf
+        self.nucleo = nucleo
 
     @planning_id
     def get_id(self):
         return self.id
+
+    def get_nucleo(self):
+        return self.nucleo
 
     def get_entry_date_core(self):
         return self.entry_date_core
@@ -40,7 +59,9 @@ class Teacher:
 
     def __str__(self):
         return (
-            f"Teacher(id={self.id}, name={self.name}, "
+            f"Teacher(id={self.id}, "
+            f"name={self.name}, "
+            f"nucleo={self.nucleo}, "
             f"entry_date_core={self.entry_date_core}, "
             f"entry_date_inf={self.entry_date_inf})"
         )
@@ -49,7 +70,12 @@ class Teacher:
 @problem_fact
 class Subject:
     def __init__(
-        self, id, name, interested_teacher_ids=None, historical_teacher_ids=None
+        self,
+        id: int,
+        name: str,
+        interested_teacher_ids=None,
+        historical_teacher_ids=None,
+        nucleo: Nucleo = None,
     ):
         self.id = id
         self.name = name
@@ -59,10 +85,23 @@ class Subject:
         self.historical_teacher_ids = (
             historical_teacher_ids if historical_teacher_ids is not None else []
         )
+        self.nucleo = nucleo
 
     @planning_id
     def get_id(self):
         return self.id
+
+    def get_name(self):
+        return self.name
+
+    def get_nucleo(self):
+        return self.nucleo
+
+    def get_interested_teacher_ids(self):
+        return self.interested_teacher_ids
+
+    def get_historical_teacher_ids(self):
+        return self.historical_teacher_ids
 
     def add_interested_teacher(self, teacher):
         if teacher.id not in self.interested_teacher_ids:
@@ -72,11 +111,10 @@ class Subject:
         return teacher.id in self.interested_teacher_ids
 
     def add_historical_teacher_id(self, teacher):
-        if teacher.id not in self.historical_teacher_ids:
-            self.historical_teacher_ids.append(teacher.id)
+        self.historical_teacher_ids.append(teacher.id)
 
     def __str__(self):
-        return f"Subject(id={self.id}, name={self.name}, interested_teacher_ids={self.interested_teacher_ids}, historical_teacher_ids={self.historical_teacher_ids})"
+        return f"Subject(id={self.id}, name={self.name}, interested_teacher_ids={self.interested_teacher_ids}, historical_teacher_ids={self.historical_teacher_ids}, nucleo={self.nucleo})"
 
 
 @planning_entity
@@ -123,10 +161,13 @@ def format_list(a_list):
 
 @planning_solution
 class TimeTable:
-    def __init__(self, lesson_list, teacher_list, subject_list, score=None):
+    def __init__(
+        self, lesson_list, teacher_list, subject_list, nucleo_list, score=None
+    ):
         self.lesson_list = lesson_list
         self.subject_list = subject_list
         self.teacher_list = teacher_list
+        self.nucleo_list = nucleo_list
         self.score = score
 
     @planning_entity_collection_property(Lesson)
@@ -160,20 +201,24 @@ def create_date(year: int, month: int) -> date:
 
 
 def generate_problem():
+    nucleo_list = [
+        Nucleo(1, "2.1"),
+        Nucleo(2, "2.2"),
+    ]
     subject_list = [
-        Subject(1, "INF0291"),
-        Subject(2, "INF0292"),
-        Subject(3, "INF0287"),
-        Subject(4, "INF0018"),
-        Subject(5, "INF0283"),
-        Subject(6, "INF0294"),
-        Subject(7, "INF0056"),
-        Subject(8, "INF0299"),
-        Subject(9, "INF0285"),
-        Subject(10, "INF0293"),
-        Subject(11, "INF0300"),
-        Subject(12, "INF0284"),
-        Subject(13, "INF0288"),
+        Subject(1, "INF0291", nucleo=nucleo_list[1]),
+        Subject(2, "INF0292", nucleo=nucleo_list[0]),
+        Subject(3, "INF0287", nucleo=nucleo_list[0]),
+        Subject(4, "INF0018", nucleo=nucleo_list[0]),
+        Subject(5, "INF0283", nucleo=nucleo_list[1]),
+        Subject(6, "INF0294", nucleo=nucleo_list[0]),
+        Subject(7, "INF0056", nucleo=nucleo_list[0]),
+        Subject(8, "INF0299", nucleo=nucleo_list[1]),
+        Subject(9, "INF0285", nucleo=nucleo_list[0]),
+        Subject(10, "INF0293", nucleo=nucleo_list[0]),
+        Subject(11, "INF0300", nucleo=nucleo_list[0]),
+        Subject(12, "INF0284", nucleo=nucleo_list[1]),
+        Subject(13, "INF0288", nucleo=nucleo_list[0]),
     ]
     teacher_list = [
         Teacher(
@@ -181,71 +226,140 @@ def generate_problem():
             "Plínio de Sá Leitão Júnior",
             create_date(2022, 12),
             create_date(2000, 10),
+            nucleo_list[1],
         ),
         Teacher(
-            2, "Reinaldo de Souza Júnior", create_date(2021, 8), create_date(1987, 12)
+            2,
+            "Reinaldo de Souza Júnior",
+            create_date(2021, 8),
+            create_date(1987, 12),
+            nucleo_list[1],
         ),
         Teacher(
-            3, "Fábio Nogueira de Lucena", create_date(2024, 1), create_date(1991, 12)
+            3,
+            "Fábio Nogueira de Lucena",
+            create_date(2024, 1),
+            create_date(1991, 12),
+            nucleo_list[1],
         ),
-        Teacher(4, "Taciana Novo Kudo", create_date(2016, 3), create_date(1990, 2)),
-        Teacher(5, "Renata Dutra Braga", create_date(2002, 8), create_date(1978, 12)),
+        Teacher(
+            4,
+            "Taciana Novo Kudo",
+            create_date(2016, 3),
+            create_date(1990, 2),
+            nucleo_list[0],
+        ),
+        Teacher(
+            5,
+            "Renata Dutra Braga",
+            create_date(2002, 8),
+            create_date(1978, 12),
+            nucleo_list[0],
+        ),
         Teacher(
             6,
             "Ana Claudia Bastos Loureiro Monção",
             create_date(2011, 4),
             create_date(1994, 12),
+            nucleo_list[1],
         ),
         Teacher(
             7,
             "Sofia Larissa da Costa Paiva",
             create_date(2023, 8),
             create_date(1996, 12),
+            nucleo_list[1],
         ),
         Teacher(
-            8, "Leonardo Andrade Ribeiro", create_date(2017, 8), create_date(1998, 12)
+            8,
+            "Leonardo Andrade Ribeiro",
+            create_date(2017, 8),
+            create_date(1998, 12),
+            nucleo_list[1],
         ),
         Teacher(
-            9, "Jacson Rodrigues Barbosa", create_date(2021, 2), create_date(1993, 2)
-        ),
-        Teacher(10, "Renato Bulcão", create_date(2021, 3), create_date(1993, 4)),
-        Teacher(
-            11, "Eliomar Araújo de Lima", create_date(2021, 5), create_date(1999, 12)
-        ),
-        Teacher(12, "Evellin Cardoso", create_date(2016, 8), create_date(1991, 7)),
-        Teacher(
-            13, "William Divino Ferreira", create_date(2017, 12), create_date(1987, 9)
+            9,
+            "Jacson Rodrigues Barbosa",
+            create_date(2021, 2),
+            create_date(1993, 2),
+            nucleo_list[0],
         ),
         Teacher(
-            14, "Rubens de Castro Pereira", create_date(2018, 8), create_date(2003, 2)
+            10,
+            "Renato Bulcão",
+            create_date(2021, 3),
+            create_date(1993, 4),
+            nucleo_list[0],
+        ),
+        Teacher(
+            11,
+            "Eliomar Araújo de Lima",
+            create_date(2021, 5),
+            create_date(1999, 12),
+            nucleo_list[0],
+        ),
+        Teacher(
+            12,
+            "Evellin Cardoso",
+            create_date(2016, 8),
+            create_date(1991, 7),
+            nucleo_list[0],
+        ),
+        Teacher(
+            13,
+            "William Divino Ferreira",
+            create_date(2017, 12),
+            create_date(1987, 9),
+            nucleo_list[0],
+        ),
+        Teacher(
+            14,
+            "Rubens de Castro Pereira",
+            create_date(2018, 8),
+            create_date(2003, 2),
+            nucleo_list[0],
         ),
         Teacher(
             15,
             "Edison Andrade Martins Morais",
             create_date(2021, 1),
             create_date(1993, 1),
+            nucleo_list[0],
         ),
         Teacher(
             16,
             "Adailton Ferreira de Araújo",
             create_date(2023, 12),
             create_date(1993, 9),
+            nucleo_list[0],
         ),
-        Teacher(17, "Hugo Nascimento", create_date(2022, 12), create_date(1993, 12)),
         Teacher(
-            18, "Leonardo Antonio Alves", create_date(2023, 11), create_date(1993, 12)
+            17,
+            "Hugo Nascimento",
+            create_date(2022, 12),
+            create_date(1993, 12),
+            nucleo_list[1],
+        ),
+        Teacher(
+            18,
+            "Leonardo Antonio Alves",
+            create_date(2023, 11),
+            create_date(1993, 12),
+            nucleo_list[1],
         ),
         Teacher(
             19,
             "Juliano Lopes de Oliveira",
             create_date(2022, 12),
             create_date(1990, 1),
+            nucleo_list[0],
         ),
         Teacher(
             20,
             "Alessandro Cruvinel Machado de Araújo",
             create_date(2022, 12),
             create_date(2000, 12),
+            nucleo_list[0],
         ),
     ]
     lesson_list = [
@@ -304,81 +418,81 @@ def generate_problem():
         Lesson(
             53,
             2024,
-            Subject(1, "INF0291", [1, 2, 3], [3, 11, 11, 3]),
+            Subject(1, "INF0291", [1, 2, 3], [3, 11, 11, 3], nucleo_list[1]),
             teacher_list=teacher_list,
         ),
         Lesson(
             54,
             2024,
-            Subject(2, "INF0292", [4, 5], [18, 18, 18, 4]),
+            Subject(2, "INF0292", [4, 5], [18, 18, 18, 4], nucleo_list[0]),
             teacher_list=teacher_list,
         ),
         Lesson(
             55,
             2024,
-            Subject(3, "INF0287", [6, 7, 8], [8, 7, 6, 6]),
+            Subject(3, "INF0287", [6, 7, 8], [8, 7, 6, 6], nucleo_list[0]),
             teacher_list=teacher_list,
         ),
         Lesson(
             56,
             2024,
-            Subject(4, "INF0018", [9, 7], [7, 7, 9, 9]),
+            Subject(4, "INF0018", [9, 7], [7, 7, 9, 9], nucleo_list[0]),
             teacher_list=teacher_list,
         ),
         Lesson(
             57,
             2024,
-            Subject(5, "INF0283", [7, 6, 10], [6, 6, 10, 10]),
+            Subject(5, "INF0283", [7, 6, 10], [6, 6, 10, 10], nucleo_list[1]),
             teacher_list=teacher_list,
         ),
         Lesson(
             58,
             2024,
-            Subject(6, "INF0294", [11, 12], [2, 11, 11, 11]),
+            Subject(6, "INF0294", [11, 12], [2, 11, 11, 11], nucleo_list[0]),
             teacher_list=teacher_list,
         ),
         Lesson(
             59,
             2024,
-            Subject(7, "INF0056", [2, 1], [3, 1, 1, 1]),
+            Subject(7, "INF0056", [2, 1], [3, 1, 1, 1], nucleo_list[0]),
             teacher_list=teacher_list,
         ),
         Lesson(
             60,
             2024,
-            Subject(8, "INF0299", [10, 6, 7], [7, 10, 10, 10]),
+            Subject(8, "INF0299", [10, 6, 7], [7, 10, 10, 10], nucleo_list[1]),
             teacher_list=teacher_list,
         ),
         Lesson(
             61,
             2024,
-            Subject(9, "INF0285", [13, 14], [13, 14, 14, 14]),
+            Subject(9, "INF0285", [13, 14], [13, 14, 14, 14], nucleo_list[0]),
             teacher_list=teacher_list,
         ),
         Lesson(
             62,
             2024,
-            Subject(10, "INF0293", [15, 4], [15, 4, 4, 4]),
+            Subject(10, "INF0293", [15, 4], [15, 4, 4, 4], nucleo_list[0]),
             teacher_list=teacher_list,
         ),
         Lesson(
             63,
             2024,
-            Subject(11, "INF0300", [16, 13], [3, 14, 14, 14]),
+            Subject(11, "INF0300", [16, 13], [3, 14, 14, 14], nucleo_list[0]),
             teacher_list=teacher_list,
         ),
         Lesson(
             64,
             2024,
-            Subject(12, "INF0284", [17, 18], [13, 16, 16, 16]),
+            Subject(12, "INF0284", [17, 18], [13, 16, 16, 16], nucleo_list[1]),
             teacher_list=teacher_list,
         ),
         Lesson(
             65,
             2024,
-            Subject(13, "INF0288", [19, 20], [16, 18, 18, 18]),
+            Subject(13, "INF0288", [19, 20], [16, 18, 18, 18], nucleo_list[0]),
             teacher_list=teacher_list,
         ),
     ]
 
-    return TimeTable(lesson_list, teacher_list, subject_list)
+    return TimeTable(lesson_list, teacher_list, subject_list, nucleo_list)
