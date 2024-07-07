@@ -1,0 +1,542 @@
+{
+    "iDproblema": 1,
+    "docente": {
+        "1": {
+            "nome": "Plínio de Sá Leitão Júnior",
+            "nucleoId": "2.1",
+            "dataNucleo": "2022-12-01",
+            "dataInf": "2000-10-01"
+        },
+        "2": {
+            "nome": "Reinaldo de Souza Júnior",
+            "nucleoId": "2.1",
+            "dataNucleo": "2021-08-01",
+            "dataInf": "1987-12-01"
+        },
+        "3": {
+            "nome": "Fábio Nogueira de Lucena",
+            "nucleoId": "2.1",
+            "dataNucleo": "2024-01-01",
+            "dataInf": "1991-12-01"
+        },
+        "4": {
+            "nome": "Taciana Novo Kudo",
+            "nucleoId": "2.1",
+            "dataNucleo": "2016-03-01",
+            "dataInf": "1990-02-01"
+        },
+        "5": {
+            "nome": "Renata Dutra Braga",
+            "nucleoId": "2.1",
+            "dataNucleo": "2002-08-01",
+            "dataInf": "1978-12-01"
+        },
+        "6": {
+            "nome": "Ana Claudia Bastos Loureiro Monção",
+            "nucleoId": "2.1",
+            "dataNucleo": "2011-04-01",
+            "dataInf": "1994-12-01"
+        },
+        "7": {
+            "nome": "Sofia Larissa da Costa Paiva",
+            "nucleoId": "2.1",
+            "dataNucleo": "2023-08-01",
+            "dataInf": "1996-12-01"
+        },
+        "8": {
+            "nome": "Leonardo Andrade Ribeiro",
+            "nucleoId": "2.1",
+            "dataNucleo": "2017-08-01",
+            "dataInf": "1998-12-01"
+        },
+        "9": {
+            "nome": "Jacson Rodrigues Barbosa",
+            "nucleoId": "2.1",
+            "dataNucleo": "2021-02-01",
+            "dataInf": "1993-02-01"
+        },
+        "10": {
+            "nome": "Renato Bulcão",
+            "nucleoId": "2.1",
+            "dataNucleo": "2021-03-01",
+            "dataInf": "1993-04-01"
+        },
+        "11": {
+            "nome": "Eliomar Araújo de Lima",
+            "nucleoId": "2.1",
+            "dataNucleo": "2021-05-01",
+            "dataInf": "1999-12-01"
+        },
+        "12": {
+            "nome": "Evellin Cardoso",
+            "nucleoId": "2.1",
+            "dataNucleo": "2016-08-01",
+            "dataInf": "1991-07-01"
+        },
+        "13": {
+            "nome": "William Divino Ferreira",
+            "nucleoId": "2.1",
+            "dataNucleo": "2017-12-01",
+            "dataInf": "1987-09-01"
+        },
+        "14": {
+            "nome": "Rubens de Castro Pereira",
+            "nucleoId": "2.1",
+            "dataNucleo": "2018-08-01",
+            "dataInf": "2003-02-01"
+        },
+        "15": {
+            "nome": "Edison Andrade Martins Morais",
+            "nucleoId": "2.1",
+            "dataNucleo": "2021-01-01",
+            "dataInf": "1993-01-01"
+        },
+        "16": {
+            "nome": "Adailton Ferreira de Araújo",
+            "nucleoId": "2.1",
+            "dataNucleo": "2023-12-01",
+            "dataInf": "1993-09-01"
+        },
+        "17": {
+            "nome": "Hugo Nascimento",
+            "nucleoId": "2.1",
+            "dataNucleo": "2022-12-01",
+            "dataInf": "1993-12-01"
+        },
+        "18": {
+            "nome": "Leonardo Antonio Alves",
+            "nucleoId": "2.1",
+            "dataNucleo": "2023-11-01",
+            "dataInf": "1993-12-01"
+        },
+        "19": {
+            "nome": "Juliano Lopes de Oliveira",
+            "nucleoId": "2.1",
+            "dataNucleo": "2022-12-01",
+            "dataInf": "1990-01-01"
+        },
+        "20": {
+            "nome": "Alessandro Cruvinel Machado de Araújo",
+            "nucleoId": "2.1",
+            "dataNucleo": "2022-12-01",
+            "dataInf": "2000-12-01"
+        }
+    },
+    "disciplinas": [
+        {
+            "id": 1,
+            "Cód Disc": "INF0291",
+            "nucleoId": "2.2"
+        },
+        {
+            "id": 2,
+            "Cód Disc": "INF0292",
+            "nucleoId": "2.1"
+        },
+        {
+            "id": 3,
+            "Cód Disc": "INF0287",
+            "nucleoId": "2.1"
+        },
+        {
+            "id": 4,
+            "Cód Disc": "INF0018",
+            "nucleoId": "2.1"
+        },
+        {
+            "id": 5,
+            "Cód Disc": "INF0283",
+            "nucleoId": "2.2"
+        },
+        {
+            "id": 6,
+            "Cód Disc": "INF0294",
+            "nucleoId": "2.1"
+        },
+        {
+            "id": 7,
+            "Cód Disc": "INF0056",
+            "nucleoId": "2.1"
+        },
+        {
+            "id": 8,
+            "Cód Disc": "INF0299",
+            "nucleoId": "2.2"
+        },
+        {
+            "id": 9,
+            "Cód Disc": "INF0285",
+            "nucleoId": "2.1"
+        },
+        {
+            "id": 10,
+            "Cód Disc": "INF0293",
+            "nucleoId": "2.1"
+        },
+        {
+            "id": 11,
+            "Cód Disc": "INF0300",
+            "nucleoId": "2.1"
+        },
+        {
+            "id": 12,
+            "Cód Disc": "INF0284",
+            "nucleoId": "2.2"
+        },
+        {
+            "id": 13,
+            "Cód Disc": "INF0288",
+            "nucleoId": "2.1"
+        }
+    ],
+    "historico": {
+        "2020": [
+            {
+                "idDisc": 3,
+                "idProfessor": 8
+            },
+            {
+                "idDisc": 4,
+                "idProfessor": 7
+            },
+            {
+                "idDisc": 5,
+                "idProfessor": 6
+            },
+            {
+                "idDisc": 1,
+                "idProfessor": 3
+            },
+            {
+                "idDisc": 6,
+                "idProfessor": 2
+            },
+            {
+                "idDisc": 7,
+                "idProfessor": 3
+            },
+            {
+                "idDisc": 8,
+                "idProfessor": 7
+            },
+            {
+                "idDisc": 9,
+                "idProfessor": 13
+            },
+            {
+                "idDisc": 11,
+                "idProfessor": 3
+            },
+            {
+                "idDisc": 12,
+                "idProfessor": 13
+            },
+            {
+                "idDisc": 13,
+                "idProfessor": 16
+            },
+            {
+                "idDisc": 2,
+                "idProfessor": 18
+            },
+            {
+                "idDisc": 10,
+                "idProfessor": 15
+            }
+        ],
+        "2021": [
+            {
+                "idDisc": 3,
+                "idProfessor": 7
+            },
+            {
+                "idDisc": 4,
+                "idProfessor": 7
+            },
+            {
+                "idDisc": 5,
+                "idProfessor": 6
+            },
+            {
+                "idDisc": 1,
+                "idProfessor": 11
+            },
+            {
+                "idDisc": 6,
+                "idProfessor": 11
+            },
+            {
+                "idDisc": 7,
+                "idProfessor": 1
+            },
+            {
+                "idDisc": 8,
+                "idProfessor": 10
+            },
+            {
+                "idDisc": 9,
+                "idProfessor": 13
+            },
+            {
+                "idDisc": 11,
+                "idProfessor": 13
+            },
+            {
+                "idDisc": 12,
+                "idProfessor": 16
+            },
+            {
+                "idDisc": 13,
+                "idProfessor": 18
+            },
+            {
+                "idDisc": 2,
+                "idProfessor": 18
+            },
+            {
+                "idDisc": 10,
+                "idProfessor": 4
+            }
+        ],
+        "2022": [
+            {
+                "idDisc": 3,
+                "idProfessor": 6
+            },
+            {
+                "idDisc": 4,
+                "idProfessor": 9
+            },
+            {
+                "idDisc": 5,
+                "idProfessor": 10
+            },
+            {
+                "idDisc": 1,
+                "idProfessor": 11
+            },
+            {
+                "idDisc": 6,
+                "idProfessor": 11
+            },
+            {
+                "idDisc": 7,
+                "idProfessor": 1
+            },
+            {
+                "idDisc": 8,
+                "idProfessor": 10
+            },
+            {
+                "idDisc": 9,
+                "idProfessor": 13
+            },
+            {
+                "idDisc": 11,
+                "idProfessor": 13
+            },
+            {
+                "idDisc": 12,
+                "idProfessor": 16
+            },
+            {
+                "idDisc": 13,
+                "idProfessor": 18
+            },
+            {
+                "idDisc": 2,
+                "idProfessor": 18
+            },
+            {
+                "idDisc": 10,
+                "idProfessor": 4
+            }
+        ],
+        "2023": [
+            {
+                "idDisc": 3,
+                "idProfessor": 6
+            },
+            {
+                "idDisc": 4,
+                "idProfessor": 9
+            },
+            {
+                "idDisc": 5,
+                "idProfessor": 10
+            },
+            {
+                "idDisc": 1,
+                "idProfessor": 3
+            },
+            {
+                "idDisc": 6,
+                "idProfessor": 11
+            },
+            {
+                "idDisc": 7,
+                "idProfessor": 1
+            },
+            {
+                "idDisc": 8,
+                "idProfessor": 10
+            },
+            {
+                "idDisc": 9,
+                "idProfessor": 13
+            },
+            {
+                "idDisc": 11,
+                "idProfessor": 13
+            },
+            {
+                "idDisc": 12,
+                "idProfessor": 16
+            },
+            {
+                "idDisc": 13,
+                "idProfessor": 18
+            },
+            {
+                "idDisc": 2,
+                "idProfessor": 4
+            },
+            {
+                "idDisc": 10,
+                "idProfessor": 4
+            }
+        ]
+    },
+    "interessesDoDocente": [
+        {
+            "idProfessor": 6,
+            "interresseDisciplina": [
+                3,
+                5,
+                8
+            ]
+        },
+        {
+            "idProfessor": 1,
+            "interresseDisciplina": [
+                1,
+                7
+            ]
+        },
+        {
+            "idProfessor": 2,
+            "interresseDisciplina": [
+                1,
+                7
+            ]
+        },
+        {
+            "idProfessor": 3,
+            "interresseDisciplina": [
+                1
+            ]
+        },
+        {
+            "idProfessor": 4,
+            "interresseDisciplina": [
+                2,
+                10
+            ]
+        },
+        {
+            "idProfessor": 5,
+            "interresseDisciplina": [
+                2
+            ]
+        },
+        {
+            "idProfessor": 7,
+            "interresseDisciplina": [
+                3,
+                4,
+                5,
+                8
+            ]
+        },
+        {
+            "idProfessor": 8,
+            "interresseDisciplina": [
+                3
+            ]
+        },
+        {
+            "idProfessor": 9,
+            "interresseDisciplina": [
+                4
+            ]
+        },
+        {
+            "idProfessor": 10,
+            "interresseDisciplina": [
+                5,
+                8
+            ]
+        },
+        {
+            "idProfessor": 11,
+            "interresseDisciplina": [
+                6
+            ]
+        },
+        {
+            "idProfessor": 12,
+            "interresseDisciplina": [
+                6
+            ]
+        },
+        {
+            "idProfessor": 13,
+            "interresseDisciplina": [
+                9,
+                11
+            ]
+        },
+        {
+            "idProfessor": 14,
+            "interresseDisciplina": [
+                9
+            ]
+        },
+        {
+            "idProfessor": 15,
+            "interresseDisciplina": [
+                10
+            ]
+        },
+        {
+            "idProfessor": 16,
+            "interresseDisciplina": [
+                11
+            ]
+        },
+        {
+            "idProfessor": 17,
+            "interresseDisciplina": [
+                12
+            ]
+        },
+        {
+            "idProfessor": 18,
+            "interresseDisciplina": [
+                12
+            ]
+        },
+        {
+            "idProfessor": 19,
+            "interresseDisciplina": [
+                13
+            ]
+        },
+        {
+            "idProfessor": 20,
+            "interresseDisciplina": [
+                13
+            ]
+        }
+    ]
+}

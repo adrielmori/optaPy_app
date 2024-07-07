@@ -1,49 +1,33 @@
+from flask import Flask, request, jsonify
 from domain import Lesson, TimeTable, generate_problem
 from constraints import define_constraints
 import optapy.config
 from optapy.types import Duration
 from optapy import solver_factory_create
 
+from utils.utils import print_timetable, timetable_to_json
 
-def print_timetable(timetable: TimeTable):
-    lesson_list = timetable.lesson_list
-    lesson_list_2024 = list(
-        filter(lambda the_lesson: the_lesson.year == 2024, lesson_list)
+app = Flask(__name__)
+
+@app.route('/solve', methods=['POST'])
+def solveRequest():
+    solver_config = (
+        optapy.config.solver.SolverConfig()
+        .withEntityClasses(Lesson)
+        .withSolutionClass(TimeTable)
+        .withConstraintProviderClass(define_constraints)
+        .withTerminationSpentLimit(Duration.ofSeconds(30))
     )
 
-    print("|-------------------|-------------------|")
-    print("| Subject           | Teacher           |")
-    print("|-------------------|-------------------|")
-    for lesson in lesson_list_2024:
-        out = "| " + "{:<15}".format(lesson.subject.name)[0:15] + " | "
-        out += "{:<15}".format(lesson.teacher.name)[0:15] + " | "
-        print(out)
-    print("|-------------------|-------------------|")
+    data = request.get_json()
 
-    unassigned_lessons = list(
-        filter(
-            lambda unassigned_lesson: unassigned_lesson.year == 2024
-            and unassigned_lesson.teacher is None,
-            lesson_list,
-        )
-    )
-    if len(unassigned_lessons) > 0:
-        print()
-        print("Unassigned lessons")
-        for lesson in unassigned_lessons:
-            print(" " + lesson.subject.name + " - No teacher assigned")
+    print(generate_problem(data))
 
+    solution = solver_factory_create(solver_config).buildSolver().solve(generate_problem(data))
 
-solver_config = (
-    optapy.config.solver.SolverConfig()
-    .withEntityClasses(Lesson)
-    .withSolutionClass(TimeTable)
-    .withConstraintProviderClass(define_constraints)
-    .withTerminationSpentLimit(Duration.ofSeconds(30))
-)
+    print_timetable(solution.lesson_list)
 
+    return jsonify(timetable_to_json(solution.lesson_list))
 
-solution = solver_factory_create(solver_config).buildSolver().solve(generate_problem())
-
-print(solution)
-print_timetable(solution)
+if __name__ == '__main__':
+    app.run(debug=True)
