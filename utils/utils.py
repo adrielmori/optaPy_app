@@ -119,12 +119,12 @@ def print_timetable(lesson_list):
             print(" " + lesson.subject.name + " - No teacher assigned")
 
 
-def timetable_to_json(lesson_list):
+def timetable_to_json(lesson_list, timetabling_score):
     lesson_list_2024 = list(
         filter(lambda the_lesson: the_lesson.year == 2024, lesson_list)
     )
 
-    timetable_json = {"lessons": []}
+    timetable_json = {"lessons": [], "score": str(timetabling_score)}
     for lesson in lesson_list_2024:
         lesson_json = {
             "Subject": lesson.subject.name,

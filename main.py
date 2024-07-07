@@ -27,7 +27,7 @@ def solveRequest():
 
     print_timetable(solution.lesson_list)
 
-    return jsonify(timetable_to_json(solution.lesson_list))
+    return jsonify(timetable_to_json(solution.lesson_list, solution.score))
 
 if __name__ == '__main__':
     app.run(debug=True)
