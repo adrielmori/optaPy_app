@@ -28,7 +28,7 @@ def load_subject(data: Dict, nucleo_list: List):
     nucleo_dict = {nucleo.name: nucleo for nucleo in nucleo_list}
     for item in data:
         if item['nucleoId'] in nucleo_dict:
-            subject = Subject(item['id'], item['Cód Disc'], nucleo=nucleo_dict[item['nucleoId']])
+            subject = Subject(item['id'], item['codDisc'], nucleo=nucleo_dict[item['nucleoId']])
             subject_list.append(subject)
     return subject_list
 
