@@ -68,30 +68,33 @@ def teacher_conflict_2_constraint(constraint_factory):
     )
 
 
-# Recompensa o professor que nunca ministrou a disciplina anteriormente.
+# Recompensa o professor do núcleo que nunca ministrou a disciplina anteriormente.
 def teacher_conflict_3_constraint(constraint_factory):
     return (
         constraint_factory.for_each(Lesson)
         .filter(lambda lesson: lesson.teacher.nucleo.name in lesson.subject.nucleo.name)
         .filter(lambda lesson: is_new_teacher_for_subject(lesson))
-        .reward("Professor nunca ministrou a disciplina", HardSoftScore.ofSoft(50))
+        .reward(
+            "Professor do núcleo que nunca ministrou a disciplina",
+            HardSoftScore.ofSoft(50),
+        )
     )
 
 
-# Recompensa o professor que ministrou a disciplina há mais tempo dentre a lista de interessados.
+# Recompensa o professor do núcleo que ministrou a disciplina há mais tempo dentre a lista de interessados.
 def teacher_conflict_4_constraint(constraint_factory):
     return (
         constraint_factory.for_each(Lesson)
         .filter(lambda lesson: lesson.teacher.nucleo.name in lesson.subject.nucleo.name)
-        .filter(lambda lesson: last_teacher_to_teach(lesson) is not None)
+        .filter(lambda lesson: last_teacher_to_teach(lesson) == lesson.teacher.id)
         .reward(
-            "Professor que ministrou a disciplina a mais tempo",
+            "Professor dentro do núcleo da disciplina que ministrou a disciplina a mais tempo",
             HardSoftScore.ofSoft(20),
         )
     )
 
 
-# Recompensa para o professor que está há mais tempo no núcleo dentre os interessados na disciplina.
+# Recompensa para o professor do núcleo que está há mais tempo no núcleo dentre os interessados na disciplina.
 def teacher_conflict_5_constraint(constraint_factory):
     return (
         constraint_factory.for_each(Lesson)
@@ -122,7 +125,7 @@ def teacher_conflict_5_constraint(constraint_factory):
     )
 
 
-# Recompensa para o professor que está há mais tempo no inf dentre os interessados na disciplina.
+# Recompensa para o professor do núcleo que está há mais tempo no inf dentre os interessados na disciplina.
 def teacher_conflict_6_constraint(constraint_factory):
     return (
         constraint_factory.for_each(Lesson)
@@ -147,7 +150,7 @@ def teacher_conflict_6_constraint(constraint_factory):
             )
         )
         .reward(
-            "Professor com mais tempo no inf",
+            "Professor do núcleo com mais tempo no inf",
             HardSoftScore.ofSoft(5),
         )
     )
@@ -172,8 +175,11 @@ def did_teach_last_and_penultimate_time(lesson):
         return False
     last_teacher = subject_history[-1]
     penultimate_teacher = subject_history[-2]
+    antepenultimate_teacher = subject_history[-3]
     return (
-        lesson.teacher.id == last_teacher and lesson.teacher.id == penultimate_teacher
+        lesson.teacher.id == last_teacher
+        and lesson.teacher.id == penultimate_teacher
+        and lesson.teacher.id != antepenultimate_teacher
     )
 
 

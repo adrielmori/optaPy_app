@@ -45,5 +45,6 @@ solver_config = (
 
 solution = solver_factory_create(solver_config).buildSolver().solve(generate_problem())
 
-print(solution)
-print_timetable(solution)
+
+for lesson in solution.get_lesson_list():
+    print(f"Aula: {lesson.subject.name} - Professor: {lesson.teacher.name}")

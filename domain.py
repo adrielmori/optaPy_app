@@ -34,8 +34,8 @@ class Teacher:
         self,
         id: int,
         name: str,
-        entry_date_core: date = None,
-        entry_date_inf: date = None,
+        entry_date_core: date = date(9999, 1, 1),
+        entry_date_inf: date = date(9999, 1, 1),
         nucleo: Nucleo = None,
     ):
         self.id = id
@@ -289,7 +289,7 @@ def generate_problem():
             "Renato Bulcão",
             create_date(2021, 3),
             create_date(1993, 4),
-            nucleo_list[0],
+            nucleo_list[1],
         ),
         Teacher(
             11,
